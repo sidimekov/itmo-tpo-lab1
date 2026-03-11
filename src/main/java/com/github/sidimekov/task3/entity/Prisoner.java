@@ -6,7 +6,7 @@ public class Prisoner extends Human {
     private int fearLevel = 0;
 
     public Prisoner(String name, String mood) {
-        super(name, mood);
+        super(mood, name);
     }
 
     public void receiveShout(int power) {
