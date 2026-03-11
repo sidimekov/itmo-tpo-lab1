@@ -156,6 +156,28 @@ public class CosSeriesTest {
 
     @ParameterizedTest
     @CsvSource({
+            "1.7976931348623157E308, 2",
+            "-1.7976931348623157E308, 2"
+    })
+    void calculate_maxValue_returnsNonFiniteResult(double x, int n) {
+        double result = CosSeries.calculate(x, n);
+
+        assertTrue(Double.isInfinite(result) || Double.isNaN(result));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "4.9E-324, 10",
+            "-4.9E-324, 10"
+    })
+    void calculate_minValue_isCloseToOne(double x, int n) {
+        double result = CosSeries.calculate(x, n);
+
+        assertEquals(1.0, result, DELTA);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
             "0.0, 0",
             "1.0, 0",
             "-1.0, 0",
