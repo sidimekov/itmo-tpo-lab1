@@ -15,7 +15,11 @@ public class ShoutEvent implements Event {
 
     @Override
     public void execute(Human target) {
-        if(target instanceof Prisoner prisoner) {
+        if (target == null) {
+            throw new NullPointerException("Target cannot be null");
+        }
+
+        if (target instanceof Prisoner prisoner) {
             prisoner.receiveShout(shoutPower);
         }
     }

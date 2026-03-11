@@ -8,7 +8,7 @@ public class Vogon extends Human {
     private int shoutPower;
 
     public Vogon(String name, String mood, double smileSpeed, int shoutPower) {
-        super(name, mood);
+        super(mood, name);
         this.smileSpeed = smileSpeed;
         this.shoutPower = shoutPower;
     }
@@ -24,6 +24,10 @@ public class Vogon extends Human {
     }
 
     public void shoutAt(Prisoner prisoner) {
+        if (prisoner == null) {
+            throw new NullPointerException("Prisoner cannot be null");
+        }
+
         ShoutEvent event = new ShoutEvent(this, shoutPower);
         event.execute(prisoner);
     }
