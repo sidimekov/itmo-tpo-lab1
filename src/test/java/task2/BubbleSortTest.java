@@ -33,4 +33,31 @@ public class BubbleSortTest {
         BubbleSort.sort(arr);
         assertArrayEquals(new int[]{42}, arr);
     }
+
+    @Test
+    public void testEmptyArray() {
+        int[] arr = {};
+        BubbleSort.sort(arr);
+        assertArrayEquals(new int[]{}, arr);
+    }
+
+    @Test
+    public void testAllEqualElements() {
+        int[] arr = {5,5,5,5};
+        BubbleSort.sort(arr);
+        assertArrayEquals(new int[]{5,5,5,5}, arr);
+    }
+
+    @Test
+    public void testNegativeAndZero() {
+        int[] arr = {0, -1, -3, 2};
+        BubbleSort.sort(arr);
+        assertArrayEquals(new int[]{-3, -1, 0, 2}, arr);
+    }
+
+    @Test
+    public void testNullArray() {
+        int[] arr = null;
+        assertThrows(NullPointerException.class, () -> BubbleSort.sort(arr));
+    }
 }
