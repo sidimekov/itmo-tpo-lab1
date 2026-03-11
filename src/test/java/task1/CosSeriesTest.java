@@ -4,7 +4,7 @@ import com.github.sidimekov.task1.CosSeries;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CosSeriesTest {
     private static final double DELTA = 1e-9;
@@ -137,5 +137,42 @@ public class CosSeriesTest {
         assertEquals(Math.cos(x), base, COS_DELTA);
         assertEquals(Math.cos(shifted_x), shifted, COS_DELTA);
         assertEquals(base, shifted, COS_DELTA);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1e-12, 10",
+            "-1e-12, 10",
+            "1e-8, 10",
+            "-1e-8, 10",
+            "100.0, 20",
+            "-100.0, 20"
+    })
+    void calculate_smallAndLargeValues(double x, int n) {
+        double result = CosSeries.calculate(x, n);
+        assertFalse(Double.isNaN(result));
+        assertFalse(Double.isInfinite(result));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0.0, 0",
+            "1.0, 0",
+            "-1.0, 0",
+            "3.141592653589793, 0"
+    })
+    void calculate_zeroN_throwsException(double x, int n) {
+        assertThrows(IllegalArgumentException.class, () -> CosSeries.calculate(x, n));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0.0, -1",
+            "1.0, -1",
+            "-1.0, -5",
+            "3.141592653589793, -10"
+    })
+    void calculate_negativeN_throwsException(double x, int n) {
+        assertThrows(IllegalArgumentException.class, () -> CosSeries.calculate(x, n));
     }
 }
