@@ -2,57 +2,98 @@ package task2;
 
 import com.github.sidimekov.task2.BubbleSort;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BubbleSortTest {
 
+    private int[] generateRandomArray(int size) {
+        Random random = new Random();
+        int[] arr = new int[size];
+        for (int i = 0; i < size; i++) {
+            arr[i] = random.nextInt(2001) - 1000;
+        }
+        return arr;
+    }
+
     @Test
     public void testAlreadySorted() {
         int[] arr = {1,2,3,4};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{1,2,3,4}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
     public void testReverse() {
         int[] arr = {4,3,2,1};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{1,2,3,4}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
     public void testRandom() {
         int[] arr = {3,1,4,2};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{1,2,3,4}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
     public void testSingleElement() {
         int[] arr = {42};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{42}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
     public void testEmptyArray() {
         int[] arr = {};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
     public void testAllEqualElements() {
         int[] arr = {5,5,5,5};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{5,5,5,5}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
     public void testNegativeAndZero() {
         int[] arr = {0, -1, -3, 2};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{-3, -1, 0, 2}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
@@ -64,43 +105,63 @@ public class BubbleSortTest {
     @Test
     public void testMaxMinInt() {
         int[] arr = {Integer.MAX_VALUE, 0, -1, 5, -100, Integer.MIN_VALUE, 50, -50, 1000, -1000};
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{Integer.MIN_VALUE, -1000, -100, -50, -1, 0, 5, 50, 1000, Integer.MAX_VALUE}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
-    public void testAlreadySorted10() {
-        int[] arr = {1,2,3,4,5,6,7,8,9,10};
+    public void testRandom100() {
+        int[] arr = generateRandomArray(100);
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{1,2,3,4,5,6,7,8,9,10}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
-    public void testReverse10() {
-        int[] arr = {10,9,8,7,6,5,4,3,2,1};
+    public void testAlreadySorted100() {
+        int[] arr = generateRandomArray(100);
+        Arrays.sort(arr);
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{1,2,3,4,5,6,7,8,9,10}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
-    public void testRandom10() {
-        int[] arr = {3,7,1,10,4,2,9,6,8,5};
+    public void testReverse100() {
+        int[] arr = generateRandomArray(100);
+        Arrays.sort(arr);
+
+        for (int i = 0; i < arr.length / 2; i++) {
+            int temp = arr[i];
+            arr[i] = arr[arr.length - 1 - i];
+            arr[arr.length - 1 - i] = temp;
+        }
+
+        int[] expected = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(expected);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{1,2,3,4,5,6,7,8,9,10}, arr);
+        assertArrayEquals(expected, arr);
     }
 
     @Test
-    public void testAllEqualElements10() {
-        int[] arr = {5,5,5,5,5,5,5,5,5,5};
-        BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{5,5,5,5,5,5,5,5,5,5}, arr);
-    }
+    public void testAllEqualElements100() {
+        int[] arr = new int[100];
+        Arrays.fill(arr, 5);
 
-    @Test
-    public void testNegativeAndZero10() {
-        int[] arr = {0, -1, -3, 2, -5, 4, -2, 1, -4, 3};
+        int[] expected = Arrays.copyOf(arr, arr.length);
+
         BubbleSort.sort(arr);
-        assertArrayEquals(new int[]{-5,-4,-3,-2,-1,0,1,2,3,4}, arr);
+        assertArrayEquals(expected, arr);
     }
 
 }
