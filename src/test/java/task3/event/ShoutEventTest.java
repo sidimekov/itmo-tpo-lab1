@@ -1,67 +1,29 @@
 package task3.event;
 
+import com.github.sidimekov.task3.emotion.EmotionState;
 import com.github.sidimekov.task3.entity.Prisoner;
 import com.github.sidimekov.task3.entity.Vogon;
-import com.github.sidimekov.task3.event.ShoutEvent;
+import com.github.sidimekov.task3.shoutEvent.ShoutEvent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ShoutEventTest {
+class ShoutEventTest {
 
     @Test
     void testExecuteOnPrisoner() {
-        Vogon vogon = new Vogon("Vogon Jeltz", "angry", 0.1, 5);
-        Prisoner prisoner = new Prisoner("Charlie", "neutral");
-
-        ShoutEvent event = new ShoutEvent(vogon, vogon.getShoutPower());
+        Vogon vogon = new Vogon("Jeltz", new EmotionState("angry",1), 0.5, 10);
+        Prisoner prisoner = new Prisoner("Ford", new EmotionState("neutral",0));
+        ShoutEvent event = new ShoutEvent(vogon,10);
         event.execute(prisoner);
-
-        assertEquals(5, prisoner.getFearLevel());
-        assertEquals("scared", prisoner.getMood());
+        double expected = Math.pow(10,2)/10.0;
+        assertEquals(expected, prisoner.getFearLevel(), 0.001);
     }
 
     @Test
-    void testExecuteMultipleTimes() {
-        Vogon vogon = new Vogon("Vogon", "angry", 0.1, 3);
-        Prisoner prisoner = new Prisoner("Dana", "neutral");
-
-        ShoutEvent event = new ShoutEvent(vogon, vogon.getShoutPower());
-        event.execute(prisoner);
-        event.execute(prisoner);
-        event.execute(prisoner);
-
-        assertEquals(9, prisoner.getFearLevel());
-        assertEquals("scared", prisoner.getMood());
-    }
-
-    @Test
-    void testExecuteOnNonPrisonerDoesNothing() {
-        Vogon vogon = new Vogon("Vogon", "angry", 0.1, 3);
-        ShoutEvent event = new ShoutEvent(vogon, vogon.getShoutPower());
-
+    void testExecuteOnNonPrisoner() {
+        Vogon vogon = new Vogon("Jeltz", new EmotionState("angry",1), 0.5, 10);
+        ShoutEvent event = new ShoutEvent(vogon,10);
         assertDoesNotThrow(() -> event.execute(vogon));
-    }
-
-    @Test
-    void testExecuteNullThrows() {
-        Vogon vogon = new Vogon("Vogon", "angry", 0.1, 3);
-        ShoutEvent event = new ShoutEvent(vogon, vogon.getShoutPower());
-
-        assertThrows(NullPointerException.class, () -> event.execute(null));
-    }
-
-    @Test
-    void testMultipleShoutEventsOnSamePrisoner() {
-        Vogon vogon = new Vogon("Vogon", "angry", 0.1, 2);
-        Prisoner prisoner = new Prisoner("P", "neutral");
-
-        ShoutEvent event = new ShoutEvent(vogon, vogon.getShoutPower());
-        for (int i = 0; i < 5; i++) {
-            event.execute(prisoner);
-        }
-
-        assertEquals(10, prisoner.getFearLevel());
-        assertEquals("scared", prisoner.getMood());
     }
 }

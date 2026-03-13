@@ -1,40 +1,36 @@
 package task3.entity;
 
+import com.github.sidimekov.task3.emotion.EmotionState;
 import com.github.sidimekov.task3.entity.Prisoner;
+import com.github.sidimekov.task3.shoutEvent.Event;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PrisonerTest {
+class PrisonerTest {
 
     @Test
-    void testReceiveShoutSingle() {
-        Prisoner prisoner = new Prisoner("Charlie", "neutral");
+    void testFearFormula() {
+        Prisoner prisoner = new Prisoner("Arthur", new EmotionState("neutral",0));
+        prisoner.receiveShout(10);
+        double expected = Math.pow(10,2)/10.0;
+        assertEquals(expected, prisoner.getFearLevel(),0.001);
+    }
+
+    @Test
+    void testFearAccumulation() {
+        Prisoner prisoner = new Prisoner("Arthur", new EmotionState("neutral",0));
         prisoner.receiveShout(5);
-        assertEquals(5, prisoner.getFearLevel());
-        assertEquals("scared", prisoner.getMood());
+        prisoner.receiveShout(5);
+        double expected = (25/10.0)+(25/10.0);
+        assertEquals(expected, prisoner.getFearLevel(),0.001);
     }
 
     @Test
-    void testReceiveShoutMultiple() {
-        Prisoner prisoner = new Prisoner("Dana", "neutral");
-        prisoner.receiveShout(3);
-        prisoner.receiveShout(7);
-        assertEquals(10, prisoner.getFearLevel());
-        assertEquals("scared", prisoner.getMood());
-    }
-
-    @Test
-    void testMultiplePrisonersScenario() {
-        Prisoner p1 = new Prisoner("P1", "neutral");
-        Prisoner p2 = new Prisoner("P2", "happy");
-
-        p1.receiveShout(2);
-        p2.receiveShout(4);
-
-        assertEquals(2, p1.getFearLevel());
-        assertEquals(4, p2.getFearLevel());
-        assertEquals("scared", p1.getMood());
-        assertEquals("scared", p2.getMood());
+    void testReactToEvent() {
+        Prisoner prisoner = new Prisoner("Ford", new EmotionState("neutral",0));
+        Event event = target -> target.setEmotion(new EmotionState("scared",5));
+        prisoner.reactToEvent(event);
+        assertEquals("scared", prisoner.getEmotion().getValue());
     }
 }
