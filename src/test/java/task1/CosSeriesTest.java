@@ -3,7 +3,6 @@ package task1;
 import com.github.sidimekov.task1.CosSeries;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,24 +74,14 @@ public class CosSeriesTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "0.0, 0",
-            "1.0, 0",
-            "-1.0, 0",
-            "3.14, 0"
-    })
+    @ValueSource(doubles = {0.0, 1.0, -1.0, 3.14})
     void calculate_zeroN_throwsException(double x) {
         int n = 0;
         assertThrows(IllegalArgumentException.class, () -> CosSeries.calculate(x, n));
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "0.0, -1",
-            "1.0, -1",
-            "-1.0, -5",
-            "3.14, -10"
-    })
+    @CsvFileSource(resources = "/task1/csv/negative_n.csv")
     void calculate_negativeN_throwsException(double x, int n) {
         assertThrows(IllegalArgumentException.class, () -> CosSeries.calculate(x, n));
     }
