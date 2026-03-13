@@ -4,6 +4,7 @@ import com.github.sidimekov.task1.CosSeries;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,24 +57,18 @@ public class CosSeriesTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "1.7976931348623157E308, 2",
-            "-1.7976931348623157E308, 2"
-    })
-        // Double.MAX_VALUE
-        // @ValueSource
-    void calculate_maxValue_returnsNonFiniteResult(double x, int n) {
+    @ValueSource(doubles = {Double.MAX_VALUE, -Double.MAX_VALUE})
+    void calculate_maxValue_returnsNonFiniteResult(double x) {
+        int n = 10;
         double result = CosSeries.calculate(x, n);
 
         assertTrue(Double.isInfinite(result) || Double.isNaN(result));
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "4.9E-324, 10",
-            "-4.9E-324, 10"
-    })
-    void calculate_minValue_isCloseToOne(double x, int n) {
+    @ValueSource(doubles = {Double.MIN_VALUE, -Double.MIN_VALUE})
+    void calculate_minValue_isCloseToOne(double x) {
+        int n = 10;
         double result = CosSeries.calculate(x, n);
 
         assertEquals(1.0, result, DELTA);
@@ -86,7 +81,8 @@ public class CosSeriesTest {
             "-1.0, 0",
             "3.14, 0"
     })
-    void calculate_zeroN_throwsException(double x, int n) {
+    void calculate_zeroN_throwsException(double x) {
+        int n = 0;
         assertThrows(IllegalArgumentException.class, () -> CosSeries.calculate(x, n));
     }
 
@@ -99,5 +95,13 @@ public class CosSeriesTest {
     })
     void calculate_negativeN_throwsException(double x, int n) {
         assertThrows(IllegalArgumentException.class, () -> CosSeries.calculate(x, n));
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY})
+    void calculate_specialDoubleValues_returnsNaN(double x) {
+        int n = 10;
+        double result = CosSeries.calculate(x, n);
+        assertTrue(Double.isNaN(result));
     }
 }
