@@ -12,10 +12,12 @@ class SmileTest {
 
     @Test
     void testSmileCreation() {
-        Vogon v = new Vogon("V", new EmotionState("neutral",0), 0.5, 10);
-        MuscleSequence seq = new MuscleSequence(true,20);
-        Smile smile = new Smile(v,0.5,seq);
-        assertEquals(0.5, smile.getSpeed());
-        assertEquals(seq, smile.getSequence());
+        Vogon v = new Vogon("V", new EmotionState("neutral", 0), 0.5, 10);
+        MuscleSequence seq = new MuscleSequence(true, 20);
+        Smile smile = new Smile(v, 0.5, seq);
+        assertAll(
+                () -> assertEquals(0.5, smile.getSpeed()),
+                () -> assertEquals(seq, smile.getSequence())
+        );
     }
 }
