@@ -1,20 +1,28 @@
 package com.github.sidimekov.task3.entity;
 
-import com.github.sidimekov.task3.event.Event;
+import com.github.sidimekov.task3.emotion.EmotionState;
+import com.github.sidimekov.task3.shoutEvent.Event;
 
 public class Prisoner extends Human {
-    private int fearLevel = 0;
 
-    public Prisoner(String name, String mood) {
-        super(mood, name);
+    private double fearLevel;
+
+    public Prisoner(String name, EmotionState emotion) {
+        super(name, emotion);
     }
 
     public void receiveShout(int power) {
-        fearLevel += power;
-        this.mood = "scared";
+
+        double fearIncrease = Math.pow(power, 2) / 10.0;
+
+        fearLevel += fearIncrease;
+
+        emotion.increaseIntensity(power);
     }
 
-    public int getFearLevel() { return fearLevel; }
+    public double getFearLevel() {
+        return fearLevel;
+    }
 
     @Override
     public void reactToEvent(Event event) {
